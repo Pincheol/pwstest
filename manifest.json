@@ -1,13 +1,14 @@
 {
-  "background_color": "none",
+  "background_color": "#fffff",
   "dir": "auto",
   "display": "standalone",
   "name": "1만 시간의 법칙",
+  "id": "time"
   "orientation": "portrait",
   "scope": "/",
   "short_name": "시간의 법칙",
   "start_url": "https://pincheol.github.io/pwstest/",
-  "theme_color": "none",
+  "theme_color": "#ffff",
   "icons": [
     {
       "src": "images/48x48.png",
