@@ -3,7 +3,7 @@
   "dir": "auto",
   "display": "standalone",
   "name": "1만 시간의 법칙",
-  "id": "time"
+  "id": "time",
   "orientation": "portrait",
   "scope": "/",
   "short_name": "시간의 법칙",
