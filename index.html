@@ -7,47 +7,6 @@
     <link rel="shortcut icon" href="img/favicon.ico">
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/10000hours.css">
-    <script>
-        (function () {
-          if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register('sw.js').then(function (registration) { // 절대 경로 사용
-              console.log('Service Worker registered with scope:', registration.scope);
-            }, function (err) {
-              console.log('Service Worker registration failed:', err);
-            });
-          }
-        })();
-
-        // Request permission for notifications
-        async function requestNotificationPermission() {
-          const permission = await Notification.requestPermission();
-          if (permission === "granted") {
-            console.log("Notification permission granted.");
-          } else {
-            console.log("Notification permission denied.");
-          }
-        }
-
-        requestNotificationPermission();
-
-        async function sendNotification() {
-          if ('serviceWorker' in navigator && 'PushManager' in window) {
-            const registration = await navigator.serviceWorker.ready;
-            if (registration.pushManager) {
-              registration.showNotification("Button Clicked", {
-                body: "버튼을 클릭하셨습니다!",
-                icon: 'img/icon.png',
-                badge: 'img/badge.png'
-              });
-            }
-          }
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-          const startButton = document.querySelector(".start_btn");
-          startButton.addEventListener("click", sendNotification);
-        });
-    </script>
     <title>1만 시간의 법칙</title>
 </head>
 <body>
@@ -142,5 +101,50 @@
         </p>
     </section>
     <script type="text/javascript" src="js/10000hours.js"></script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+        });
+    }
+
+    // Request permission for notifications
+    async function requestNotificationPermission() {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+            console.log("Notification permission granted.");
+        } else {
+            console.log("Notification permission denied.");
+        }
+    }
+
+    requestNotificationPermission();
+
+    async function sendNotification() {
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            const registration = await navigator.serviceWorker.ready;
+            if (registration.pushManager) {
+                registration.showNotification("Button Clicked", {
+                    body: "버튼을 클릭하셨습니다!",
+                    icon: 'img/icon.png',
+                    badge: 'img/badge.png'
+                });
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const startButton = document.querySelector(".start_btn");
+        if (startButton) {
+            startButton.addEventListener("click", sendNotification);
+        }
+    });
+    </script>
 </body>
 </html>
