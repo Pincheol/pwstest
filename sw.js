@@ -4,7 +4,7 @@ const CACHE = "pwabuilder-page";
 const offlineFallbackPage = "offline.html";
 const offlineAssets = [
   "offline.html",
-  "/img/offline.png" // 여기에 오프라인 시 필요한 이미지를 추가합니다
+  "/img/offline.png"
 ];
 
 self.addEventListener("message", (event) => {
