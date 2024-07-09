@@ -10,7 +10,7 @@
     <script>
         (function () {
           if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register('/sw.js').then(function (registration) { // 절대 경로 사용
+            navigator.serviceWorker.register('sw.js').then(function (registration) { // 절대 경로 사용
               console.log('Service Worker registered with scope:', registration.scope);
             }, function (err) {
               console.log('Service Worker registration failed:', err);
