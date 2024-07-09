@@ -3,8 +3,8 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox
 const CACHE = "pwabuilder-page";
 const offlineFallbackPage = "offline.html";
 const offlineAssets = [
-  "/offline.html",
-  "/img/offline.png"
+  "offline.html",
+  "img/offline.png" // 여기에 오프라인 시 필요한 이미지를 추가합니다
 ];
 
 self.addEventListener("message", (event) => {
@@ -40,25 +40,12 @@ self.addEventListener('fetch', (event) => {
         return cachedResp;
       }
     })());
-  } else {
+  } else if (offlineAssets.includes(event.request.url)) {
+    // 오프라인 자산의 경우 캐시된 자산을 반환합니다
     event.respondWith(
       caches.match(event.request).then((response) => {
         return response || fetch(event.request);
       })
     );
   }
-});
-
-// 푸시 이벤트 리스너 추가
-self.addEventListener('push', function(event) {
-  const data = event.data.json();
-  const title = data.title;
-  const options = {
-    body: data.body,
-    icon: 'img/icon.png',
-    badge: 'img/badge.png'
-  };
-  event.waitUntil(
-    self.registration.showNotification(title, options)
-  );
 });
