@@ -3,8 +3,8 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox
 const CACHE = "pwabuilder-page";
 const offlineFallbackPage = "offline.html";
 const offlineAssets = [
-  "offline.html",
-  "img/offline.png" // 여기에 오프라인 시 필요한 이미지를 추가합니다
+  "/offline.html",
+  "/img/offline.png"
 ];
 
 self.addEventListener("message", (event) => {
@@ -14,23 +14,10 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener('install', async (event) => {
-  console.log('Service Worker: Install event');
   event.waitUntil(
     caches.open(CACHE)
-      .then((cache) => {
-        console.log('Service Worker: Caching offline assets');
-        return cache.addAll(offlineAssets);
-      })
-      .then(() => self.skipWaiting())
-      .catch(error => {
-        console.error('Service Worker: Failed to cache offline assets', error);
-      })
+      .then((cache) => cache.addAll(offlineAssets))
   );
-});
-
-self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activate event');
-  event.waitUntil(self.clients.claim());
 });
 
 if (workbox.navigationPreload.isSupported()) {
@@ -38,7 +25,6 @@ if (workbox.navigationPreload.isSupported()) {
 }
 
 self.addEventListener('fetch', (event) => {
-  console.log('Service Worker: Fetch event', event.request.url);
   if (event.request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
@@ -54,11 +40,25 @@ self.addEventListener('fetch', (event) => {
         return cachedResp;
       }
     })());
-  } else if (offlineAssets.includes(event.request.url)) {
+  } else {
     event.respondWith(
       caches.match(event.request).then((response) => {
         return response || fetch(event.request);
       })
     );
   }
+});
+
+// 푸시 이벤트 리스너 추가
+self.addEventListener('push', function(event) {
+  const data = event.data.json();
+  const title = data.title;
+  const options = {
+    body: data.body,
+    icon: 'img/icon.png',
+    badge: 'img/badge.png'
+  };
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
 });
