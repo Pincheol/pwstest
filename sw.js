@@ -4,7 +4,7 @@ const CACHE = "pwabuilder-page";
 const offlineFallbackPage = "offline.html";
 const offlineAssets = [
   "/offline.html",
-  "/img/offline.png" // 이미지 파일의 절대 경로 사용
+  "/img/offline.png"
 ];
 
 self.addEventListener("message", (event) => {
@@ -47,4 +47,18 @@ self.addEventListener('fetch', (event) => {
       })
     );
   }
+});
+
+// 푸시 이벤트 리스너 추가
+self.addEventListener('push', function(event) {
+  const data = event.data.json();
+  const title = data.title;
+  const options = {
+    body: data.body,
+    icon: 'img/icon.png',
+    badge: 'img/badge.png'
+  };
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
 });
