@@ -4,7 +4,7 @@ const CACHE = "pwabuilder-page";
 const offlineFallbackPage = "offline.html";
 const offlineAssets = [
   "offline.html",
-  "/img/offline.png"
+  "/img/offline.png" // 여기에 오프라인 시 필요한 이미지를 추가합니다
 ];
 
 self.addEventListener("message", (event) => {
@@ -17,12 +17,7 @@ self.addEventListener('install', async (event) => {
   event.waitUntil(
     caches.open(CACHE)
       .then((cache) => cache.addAll(offlineAssets))
-      .then(() => self.skipWaiting()) // skipWaiting 호출
   );
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim()); // clientsClaim 호출
 });
 
 if (workbox.navigationPreload.isSupported()) {
