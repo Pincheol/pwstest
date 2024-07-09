@@ -27,19 +27,29 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       try {
         const preloadResp = await event.preloadResponse;
-
         if (preloadResp) {
           return preloadResp;
         }
-
         const networkResp = await fetch(event.request);
         return networkResp;
       } catch (error) {
-
         const cache = await caches.open(CACHE);
         const cachedResp = await cache.match(offlineFallbackPage);
         return cachedResp;
       }
     })());
   }
+});
+
+// Push notification event
+self.addEventListener('push', event => {
+  const data = event.data.json();
+  const options = {
+    body: data.body,
+    icon: 'img/icon.png', // 푸시 알림에 사용할 아이콘
+    badge: 'img/badge.png' // 푸시 알림에 사용할 배지 아이콘
+  };
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
 });
