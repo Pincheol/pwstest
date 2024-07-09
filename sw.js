@@ -1,8 +1,10 @@
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+
 const CACHE = "pwabuilder-page";
 const offlineFallbackPage = "offline.html";
 const offlineAssets = [
   "offline.html",
-  "/img/offline.png" // 여기에 오프라인 시 필요한 이미지를 추가합니다
+  "img/offline.png" // 여기에 오프라인 시 필요한 이미지를 추가합니다
 ];
 
 self.addEventListener("message", (event) => {
@@ -12,18 +14,23 @@ self.addEventListener("message", (event) => {
 });
 
 self.addEventListener('install', async (event) => {
+  console.log('Service Worker: Install event');
   event.waitUntil(
     caches.open(CACHE)
-      .then((cache) => cache.addAll(offlineAssets))
-      .then(() => self.skipWaiting()) // skipWaiting 호출 추가
+      .then((cache) => {
+        console.log('Service Worker: Caching offline assets');
+        return cache.addAll(offlineAssets);
+      })
+      .then(() => self.skipWaiting())
       .catch(error => {
-        console.error('Failed to cache offline assets', error);
+        console.error('Service Worker: Failed to cache offline assets', error);
       })
   );
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim()); // clientsClaim 호출 추가
+  console.log('Service Worker: Activate event');
+  event.waitUntil(self.clients.claim());
 });
 
 if (workbox.navigationPreload.isSupported()) {
@@ -31,6 +38,7 @@ if (workbox.navigationPreload.isSupported()) {
 }
 
 self.addEventListener('fetch', (event) => {
+  console.log('Service Worker: Fetch event', event.request.url);
   if (event.request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
@@ -47,7 +55,6 @@ self.addEventListener('fetch', (event) => {
       }
     })());
   } else if (offlineAssets.includes(event.request.url)) {
-    // 오프라인 자산의 경우 캐시된 자산을 반환합니다
     event.respondWith(
       caches.match(event.request).then((response) => {
         return response || fetch(event.request);
