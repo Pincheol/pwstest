@@ -1,0 +1,45 @@
+{
+  "background_color": "none",
+  "dir": "auto",
+  "display": "standalone",
+  "name": "1만 시간의 법칙",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "시간의 법칙",
+  "start_url": "https://pincheol.github.io/pwstest/",
+  "theme_color": "none",
+  "icons": [
+    {
+      "src": "images/48x48.png",
+      "type": "image/png",
+      "sizes":"48x48"
+    },
+    {
+      "src": "images/72x72.png",
+      "type": "image/png",
+      "sizes":"72x72"
+    },
+    {
+      "src": "images/96x96.png",
+      "type": "image/png",
+      "sizes":"96x96"
+    },
+    {
+      "src": "images/144x144.png",
+      "type": "image/png",
+      "sizes":"144x144"
+    },
+    {
+      "src": "images/192x192.png",
+      "type": "image/png",
+      "sizes":"192x192"
+    },
+    {
+      "src": "images/512x512.png",
+      "type": "image/png",
+      "sizes":"512x512"
+    }
+  ],
+  "description": "1만 시간의 법칙은 전문가가 되기 위해 며칠이 걸리는지 계산해 주는 서비스입니다.",
+  "lang": "ko"
+}
