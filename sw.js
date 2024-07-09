@@ -17,7 +17,12 @@ self.addEventListener('install', async (event) => {
   event.waitUntil(
     caches.open(CACHE)
       .then((cache) => cache.addAll(offlineAssets))
+      .then(() => self.skipWaiting()) // skipWaiting 호출
   );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim()); // clientsClaim 호출
 });
 
 if (workbox.navigationPreload.isSupported()) {
