@@ -1,5 +1,3 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
-
 const CACHE = "pwabuilder-page";
 const offlineFallbackPage = "offline.html";
 const offlineAssets = [
@@ -18,6 +16,9 @@ self.addEventListener('install', async (event) => {
     caches.open(CACHE)
       .then((cache) => cache.addAll(offlineAssets))
       .then(() => self.skipWaiting()) // skipWaiting 호출 추가
+      .catch(error => {
+        console.error('Failed to cache offline assets', error);
+      })
   );
 });
 
