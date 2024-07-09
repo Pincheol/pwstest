@@ -10,7 +10,7 @@
     <script>
         (function () {
           if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register('/sw.js').then(function (registration) {
+            navigator.serviceWorker.register('sw.js').then(function (registration) {
               console.log('Service Worker registered with scope:', registration.scope);
             }, function (err) {
               console.log('Service Worker registration failed:', err);
@@ -35,7 +35,7 @@
             const registration = await navigator.serviceWorker.ready;
             if (registration.pushManager) {
               registration.showNotification("Button Clicked", {
-                body: "You clicked the start button!",
+                body: "버튼을 클릭하셨습니다!",
                 icon: 'img/icon.png',
                 badge: 'img/badge.png'
               });
